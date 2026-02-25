@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Missing Man Chicago 🏆</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <p class="eyebrow">Daily Chicago Sports Game</p>
+        <h1>🏆 Missing Man Chicago</h1>
+        <p class="subtitle">One missing starter. One city. Six guesses.</p>
+        <p id="day-label" class="day-label"></p>
+      </header>
+
+      <section class="card" id="puzzle-card"></section>
+
+      <section class="card">
+        <h2>Who is missing?</h2>
+        <form id="guess-form" autocomplete="off">
+          <input id="guess-input" list="player-options" placeholder="Type a player name" required />
+          <datalist id="player-options"></datalist>
+          <button type="submit">Submit Guess</button>
+          <button id="reset-today" type="button" class="secondary">Reset Today (dev)</button>
+        </form>
+        <p id="feedback" class="feedback"></p>
+        <div id="hints" class="hints"></div>
+      </section>
+
+      <section class="card">
+        <h2>Share</h2>
+        <pre id="share-output" class="share-output"></pre>
+        <button id="copy-share">Copy Result</button>
+      </section>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
+
