@@ -2,41 +2,73 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Missing Man Chicago 🏆</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <main class="app">
+    <div id="app-loading" style="text-align:center;padding:2rem;color:var(--muted, #888);">Loading…</div>
+    <main class="app" id="app-main" style="display:none">
+      <div class="game-content">
       <header class="hero">
         <p class="eyebrow">Daily Chicago Sports Game</p>
         <h1>🏆 Missing Man Chicago</h1>
         <p class="subtitle">One missing starter. One city. Six guesses.</p>
         <p id="day-label" class="day-label"></p>
       </header>
+      </div>
 
-      <section class="card" id="puzzle-card"></section>
+      <div class="lineup-row">
+        <div class="lineup-bubble">
+          <section class="card" id="puzzle-card"></section>
+        </div>
+        <aside class="settings-sidebar" id="settings-card">
+          <details class="settings-details" open>
+            <summary class="settings-summary">Settings</summary>
+          <p class="settings-desc">Include puzzles from these teams:</p>
+          <div class="team-checkboxes" id="team-checkboxes">
+            <label><input type="checkbox" data-team="CHC" checked /> Cubs</label>
+            <label><input type="checkbox" data-team="CHI" checked /> Bears</label>
+          </div>
+          <p class="settings-desc">Include puzzles from these decades:</p>
+          <div class="decade-checkboxes" id="decade-checkboxes">
+            <label><input type="checkbox" data-decade="1970" checked /> 1970s</label>
+            <label><input type="checkbox" data-decade="1980" checked /> 1980s</label>
+            <label><input type="checkbox" data-decade="1990" checked /> 1990s</label>
+            <label><input type="checkbox" data-decade="2000" checked /> 2000s</label>
+            <label><input type="checkbox" data-decade="2010" checked /> 2010s</label>
+            <label><input type="checkbox" data-decade="2020" checked /> 2020s</label>
+          </div>
+          </details>
+        </aside>
+      </div>
 
-      <section class="card">
-        <h2>Who is missing?</h2>
-        <form id="guess-form" autocomplete="off">
-          <input id="guess-input" list="player-options" placeholder="Type a player name" required />
-          <datalist id="player-options"></datalist>
-          <button type="submit">Submit Guess</button>
-          <button id="reset-today" type="button" class="secondary">Reset Today (dev)</button>
-        </form>
-        <p id="feedback" class="feedback"></p>
-        <div id="hints" class="hints"></div>
-      </section>
+      <div class="game-bottom">
+        <section class="card card-compact">
+          <h2>Who is missing?</h2>
+          <form id="guess-form" autocomplete="off">
+            <input id="guess-input" placeholder="Type a player name" required />
+            <button type="submit">Submit Guess</button>
+            <button id="reset-today" type="button" class="secondary">Reset Today (dev)</button>
+          </form>
+          <p id="feedback" class="feedback"></p>
+          <div id="hints" class="hints"></div>
+        </section>
 
-      <section class="card">
-        <h2>Share</h2>
-        <pre id="share-output" class="share-output"></pre>
-        <button id="copy-share">Copy Result</button>
-      </section>
+        <section class="card card-compact">
+          <h2>Share</h2>
+          <pre id="share-output" class="share-output"></pre>
+          <button id="copy-share">Copy Result</button>
+        </section>
+      </div>
     </main>
 
-    <script type="module" src="/app.js"></script>
+    <script src="/data/puzzles.js" defer></script>
+    <script src="/app.js" defer></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        if (window.innerWidth <= 600) document.querySelector(".settings-details")?.removeAttribute("open");
+      });
+    </script>
   </body>
 </html>
-

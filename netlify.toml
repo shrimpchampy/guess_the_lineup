@@ -2,4 +2,3 @@
   from = "/day/*"
   to = "/day/index.html"
   status = 200
-

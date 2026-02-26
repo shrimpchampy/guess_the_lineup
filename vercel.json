@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/day/:path*", "destination": "/day/index.html" }
+  ]
+}

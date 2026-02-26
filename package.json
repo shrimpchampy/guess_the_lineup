@@ -1,0 +1,9 @@
+{
+  "name": "missing-man-chicago",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "fetch-puzzles": "node scripts/fetch-puzzles.js",
+    "parse-bears-pdf": "node scripts/parse-bears-pdf.js"
+  }
+}

@@ -1,174 +1,421 @@
 :root {
-  color-scheme: dark;
-  --bg: #0a0f1a;
-  --card: #111b2e;
-  --text: #f4f7fb;
-  --muted: #a7b4c6;
-  --accent: #1e90ff;
-  --accent-2: #e63946;
-  --good: #3ddc97;
+  --bg: #0f0f12;
+  --card: #1a1a20;
+  --text: #e8e8ec;
+  --muted: #888;
+  --accent: #c41e3a;
+  --accent-hover: #e02545;
+  --success: #22c55e;
+  --border: #2a2a32;
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", Roboto, sans-serif;
-  background: radial-gradient(circle at top, #1f3c68 0%, var(--bg) 58%);
+  -webkit-tap-highlight-color: rgba(196, 30, 58, 0.2);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
   color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport for mobile browsers */
+  padding: 0.5rem;
+  padding-top: max(0.5rem, env(safe-area-inset-top));
 }
 
 .app {
-  width: min(560px, 94vw);
-  margin: 1rem auto 2rem;
-  display: grid;
-  gap: 0.8rem;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.game-content {
+  width: 420px;
+  max-width: 100%;
+}
+
+.lineup-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.game-bottom {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  width: 420px;
+  max-width: 100%;
+}
+
+.game-bottom .card-compact {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.lineup-bubble {
+  flex-shrink: 1;
+  min-width: 0;
+  width: 420px;
+}
+
+.settings-sidebar {
+  flex-shrink: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  min-width: 120px;
+}
+
+.settings-details {
+  width: 100%;
+}
+
+.settings-summary {
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  margin-bottom: 0.35rem;
+  user-select: none;
+}
+
+.settings-summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-summary::before {
+  content: "▼";
+  display: inline-block;
+  margin-right: 0.35rem;
+  font-size: 0.65em;
+  transition: transform 0.2s;
+}
+
+.settings-details[open] .settings-summary::before {
+  transform: rotate(-90deg);
+}
+
+.team-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.settings-sidebar .team-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.team-checkboxes input[type="checkbox"] {
+  width: 1.1em;
+  height: 1.1em;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.settings-sidebar .settings-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.settings-sidebar .decade-checkboxes label {
+  font-size: 0.85rem;
+}
+
+/* Mobile optimizations */
+@media (max-width: 600px) {
+  body {
+    padding: 0.5rem;
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+    padding-left: max(0.5rem, env(safe-area-inset-left));
+    padding-right: max(0.5rem, env(safe-area-inset-right));
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+
+  .app {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .game-content {
+    width: 100%;
+  }
+
+  .lineup-row {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .lineup-bubble {
+    width: 100%;
+  }
+
+  .settings-sidebar {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .settings-details {
+    border: none;
+  }
+
+  .settings-details:not([open]) .settings-desc,
+  .settings-details:not([open]) .team-checkboxes,
+  .settings-details:not([open]) .decade-checkboxes {
+    display: none;
+  }
+
+  .game-bottom {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Touch-friendly: min 44px tap targets */
+  button {
+    min-height: 44px;
+    padding: 0.5rem 0.9rem;
+  }
+
+  #guess-input {
+    min-height: 44px;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+
+  .decade-checkboxes input[type="checkbox"] {
+    width: 1.25em;
+    height: 1.25em;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  .decade-checkboxes label {
+    min-height: 32px;
+    padding: 0.25rem 0;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .hero h1 {
+    font-size: 1.2rem;
+  }
+
+  #guess-form {
+    flex-direction: column;
+  }
+
+  #guess-form button {
+    width: 100%;
+  }
 }
 
 .hero {
   text-align: center;
-  padding: 0.4rem 0.2rem;
+  margin-bottom: 0.5rem;
 }
 
 .eyebrow {
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.75rem;
+  letter-spacing: 0.1em;
   color: var(--muted);
-  margin: 0;
+  margin-bottom: 0.15rem;
 }
 
-h1 {
-  margin: 0.2rem 0;
-  font-size: 1.7rem;
+.hero h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
 }
 
-.subtitle,
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
 .day-label {
-  margin: 0.2rem 0;
+  font-size: 0.8rem;
   color: var(--muted);
 }
 
 .card {
   background: var(--card);
-  border-radius: 14px;
-  padding: 0.9rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  min-width: 0; /* Allow flex children to shrink */
 }
 
-h2 {
-  margin: 0 0 0.55rem;
-  font-size: 1.05rem;
+.card-compact {
+  padding: 0.6rem 0.75rem;
 }
 
-.lineup-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-bottom: 0.6rem;
+.card-compact h2 {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
 }
 
-.pill {
-  background: var(--accent-2);
-  color: #fff;
-  border-radius: 999px;
-  padding: 0.2rem 0.55rem;
-  font-size: 0.75rem;
-  font-weight: 700;
+.card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
-.pill.soft {
-  background: rgba(255, 255, 255, 0.12);
-  font-weight: 500;
+.team-badge {
+  display: inline-block;
+  background: rgba(196, 30, 58, 0.2);
+  color: var(--accent);
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
 }
 
 .lineup {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 0.4rem;
 }
 
 .lineup li {
-  padding: 0.55rem 0.65rem;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.08);
-  font-size: 0.97rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
-.missing {
-  color: #ffd166;
-  font-weight: 700;
+.lineup li:last-child {
+  border-bottom: none;
 }
 
-form {
-  display: grid;
-  gap: 0.55rem;
+.lineup li.missing {
+  color: var(--muted);
 }
 
-input,
-button {
-  font: inherit;
-  border-radius: 10px;
-  padding: 0.75rem;
+.lineup li.missing.revealed {
+  color: var(--success);
 }
 
-input {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.09);
+#guess-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+#guess-input {
+  flex: 1;
+  min-width: 100px;
+  padding: 0.4rem 0.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
   color: var(--text);
+  font-size: 0.9rem;
+}
+
+#guess-input:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 button {
-  border: 0;
-  background: linear-gradient(90deg, var(--accent-2), var(--accent));
-  color: #fff;
-  font-weight: 700;
+  padding: 0.4rem 0.7rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
 }
 
+button:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background: var(--border);
+}
+
+button.secondary:hover {
+  background: #3a3a42;
+}
+
 .feedback {
-  min-height: 1.25rem;
-  margin-top: 0.55rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+  min-height: 1.2em;
 }
 
 .hints {
   margin-top: 0.35rem;
+}
+
+.hint {
+  font-size: 0.75rem;
   color: var(--muted);
-  display: grid;
-  gap: 0.35rem;
-  font-size: 0.95rem;
+  padding: 0.2rem 0;
+  border-top: 1px solid var(--border);
 }
 
 .share-output {
+  background: var(--bg);
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
   white-space: pre-wrap;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 0.75rem;
-  font-size: 0.95rem;
-  margin-bottom: 0.6rem;
+  word-break: break-all;
+  margin-bottom: 0.4rem;
+  font-family: ui-monospace, monospace;
 }
 
 #copy-share {
   width: 100%;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.8rem;
 }
 
-.visually-hidden {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+.decade-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-button.secondary {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+.decade-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  cursor: pointer;
 }
 
+.decade-checkboxes input[type="checkbox"] {
+  width: 1.1em;
+  height: 1.1em;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
