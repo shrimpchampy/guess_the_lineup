@@ -332,8 +332,9 @@ function renderShare() {
     const g = state.guesses[i];
     row += !g ? "⬜" : g.isCorrect ? "🟩" : "🟥";
   }
+  const gameUrl = window.location.origin + "/";
   const header = `Missing Man Chicago · Day ${dayId}\n`;
-  shareOutput.textContent = header + row;
+  shareOutput.textContent = header + row + `\n\nPlay: ${gameUrl}`;
 }
 
     if (loading) loading.style.display = "none";
