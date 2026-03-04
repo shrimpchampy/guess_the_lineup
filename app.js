@@ -57,6 +57,7 @@ setupTeamCheckboxes();
 setupDecadeCheckboxes();
 
 renderHeader();
+renderGuessTracker();
 renderLineup();
 renderHints();
 renderShare();
@@ -96,6 +97,7 @@ form.addEventListener("submit", (event) => {
 
   guessInput.value = "";
   persistState(storageKey, state);
+  renderGuessTracker();
   renderLineup();
   renderHints();
   renderShare();
@@ -252,7 +254,26 @@ function renderHeader() {
     day: "numeric",
     year: "numeric"
   });
-  dayLabel.textContent = dateStr;
+  dayLabel.textContent = `Day ${dayId} — ${dateStr}`;
+}
+
+function renderGuessTracker() {
+  const tracker = document.querySelector("#guess-tracker");
+  if (!tracker) return;
+  let html = "";
+  for (let i = 0; i < MAX_GUESSES; i++) {
+    const g = state.guesses[i];
+    if (g) {
+      html += g.isCorrect
+        ? `<div class="guess-pip correct">✓</div>`
+        : `<div class="guess-pip wrong">✕</div>`;
+    } else if (i === state.guesses.length && !state.complete) {
+      html += `<div class="guess-pip current"></div>`;
+    } else {
+      html += `<div class="guess-pip"></div>`;
+    }
+  }
+  tracker.innerHTML = html;
 }
 
 function renderLineup() {

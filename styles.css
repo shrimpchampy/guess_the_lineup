@@ -1,17 +1,42 @@
-/* User mode: hide dev-only elements (settings, dev footer) */
+/* ========================================
+   MISSING MAN CHICAGO — BRANDED THEME
+   Chicago Flag Palette + Skyline Identity
+   ======================================== */
+
+/* User mode: hide dev-only elements */
 body.user-mode [data-dev-only] {
   display: none !important;
 }
 
 :root {
-  --bg: #0f0f12;
-  --card: #1a1a20;
-  --text: #e8e8ec;
-  --muted: #888;
-  --accent: #c41e3a;
-  --accent-hover: #e02545;
-  --success: #22c55e;
-  --border: #2a2a32;
+  /* Chicago Flag Palette */
+  --chi-blue: #4EB4E6;
+  --chi-blue-deep: #2A7AB5;
+  --chi-blue-dark: #1B5A8A;
+  --chi-red: #CF2A2A;
+  --chi-red-glow: #E63946;
+
+  /* UI System */
+  --bg: #0B1622;
+  --bg-secondary: #0F1D2E;
+  --card: #132336;
+  --card-hover: #183050;
+  --text: #EDF2F7;
+  --text-secondary: #8BA4BD;
+  --muted: #5A7A99;
+  --accent: #CF2A2A;
+  --accent-hover: #E63946;
+  --success: #34D399;
+  --success-bg: rgba(52, 211, 153, 0.1);
+  --border: rgba(78, 180, 230, 0.12);
+  --border-active: rgba(78, 180, 230, 0.3);
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-lg: 1rem;
+  --space-xl: 1.5rem;
 }
 
 * {
@@ -26,20 +51,85 @@ html {
 }
 
 body {
-  -webkit-tap-highlight-color: rgba(196, 30, 58, 0.2);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: rgba(78, 180, 230, 0.15);
+  font-family: 'Barlow', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport for mobile browsers */
+  min-height: 100dvh;
   padding: 0.5rem;
   padding-top: max(0.5rem, env(safe-area-inset-top));
   padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* ========================================
+   CHICAGO FLAG TOP STRIPE
+   ======================================== */
+
+.flag-stripe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--chi-blue) 0%,
+    var(--chi-blue) 40%,
+    var(--chi-red) 40%,
+    var(--chi-red) 60%,
+    var(--chi-blue) 60%,
+    var(--chi-blue) 100%
+  );
+  z-index: 100;
+}
+
+/* ========================================
+   CHICAGO SKYLINE BACKGROUND
+   ======================================== */
+
+.skyline-bg {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.04;
+  overflow: hidden;
+}
+
+.skyline-bg svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.skyline-glow {
+  position: fixed;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 300px;
+  background: radial-gradient(ellipse at center bottom, rgba(78, 180, 230, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========================================
+   LAYOUT
+   ======================================== */
+
 .app {
-  max-width: 560px;
+  max-width: 440px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .game-content {
@@ -75,6 +165,365 @@ body {
   width: 420px;
 }
 
+/* ========================================
+   HEADER / HERO
+   ======================================== */
+
+.hero {
+  text-align: center;
+  margin-bottom: var(--space-md);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.logo-lockup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 0.35rem;
+}
+
+.logo-star {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  animation: starPulse 4s ease-in-out infinite;
+}
+
+@keyframes starPulse {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(207, 42, 42, 0.3)); }
+  50% { filter: drop-shadow(0 0 10px rgba(207, 42, 42, 0.6)); }
+}
+
+.hero h1 {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  margin-bottom: 0.15rem;
+}
+
+.hero h1 .accent {
+  color: var(--chi-blue);
+}
+
+.subtitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.day-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+/* ========================================
+   GUESS TRACKER PIPS
+   ======================================== */
+
+.guess-tracker {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: var(--space-md);
+}
+
+.guess-pip {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.guess-pip.wrong {
+  background: rgba(207, 42, 42, 0.15);
+  border-color: var(--chi-red);
+  color: var(--chi-red-glow);
+}
+
+.guess-pip.correct {
+  background: var(--success-bg);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.guess-pip.current {
+  border-color: var(--chi-blue);
+  box-shadow: 0 0 8px rgba(78, 180, 230, 0.2);
+}
+
+/* ========================================
+   CARDS
+   ======================================== */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(78, 180, 230, 0.2), transparent);
+}
+
+.card-compact {
+  padding: 0.6rem 0.75rem;
+}
+
+.card-compact h2 {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.card h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+/* ========================================
+   TEAM BADGE
+   ======================================== */
+
+.team-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(78, 180, 230, 0.08);
+  border: 1px solid rgba(78, 180, 230, 0.15);
+  color: var(--chi-blue);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.team-badge::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--chi-blue);
+  flex-shrink: 0;
+}
+
+/* ========================================
+   LINEUP LIST
+   ======================================== */
+
+.lineup {
+  list-style: none;
+}
+
+.lineup li {
+  padding: 0.3rem 0.4rem;
+  margin: 0 -0.4rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  transition: background 0.15s;
+}
+
+.lineup li:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.lineup li:last-child {
+  border-bottom: none;
+}
+
+.lineup li.missing {
+  background: rgba(78, 180, 230, 0.04);
+  color: var(--chi-blue);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.lineup li.missing.revealed {
+  background: var(--success-bg);
+  color: var(--success);
+  letter-spacing: normal;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 500;
+}
+
+/* ========================================
+   GUESS FORM
+   ======================================== */
+
+#guess-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+#guess-input {
+  flex: 1;
+  min-width: 100px;
+  padding: 0.5rem 0.65rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#guess-input::placeholder {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+#guess-input:focus {
+  outline: none;
+  border-color: var(--chi-blue);
+  box-shadow: 0 0 0 3px rgba(78, 180, 230, 0.1);
+}
+
+button {
+  padding: 0.5rem 0.8rem;
+  background: var(--chi-red);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover:not(:disabled) {
+  background: var(--accent-hover);
+  box-shadow: 0 4px 12px rgba(207, 42, 42, 0.3);
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background: var(--card-hover);
+  border: 1px solid var(--border);
+}
+
+button.secondary:hover {
+  background: var(--chi-blue-dark);
+  border-color: var(--chi-blue);
+}
+
+/* ========================================
+   FEEDBACK & HINTS
+   ======================================== */
+
+.feedback {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  min-height: 1.2em;
+}
+
+.hints {
+  margin-top: 0.35rem;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 0.25rem 0.5rem;
+  margin: 0.15rem 0;
+  background: rgba(78, 180, 230, 0.04);
+  border-left: 2px solid var(--chi-blue);
+  border-radius: 0 4px 4px 0;
+}
+
+/* ========================================
+   SHARE
+   ======================================== */
+
+.share-output {
+  background: var(--bg);
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin-bottom: 0.4rem;
+  font-family: ui-monospace, monospace;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+#copy-share {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.8rem;
+  background: var(--card-hover);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+#copy-share:hover {
+  background: var(--chi-blue-dark);
+  border-color: var(--chi-blue);
+  box-shadow: none;
+  transform: none;
+}
+
+/* ========================================
+   SETTINGS SIDEBAR (dev only)
+   ======================================== */
+
 .settings-sidebar {
   flex-shrink: 0;
   background: var(--card);
@@ -89,6 +538,7 @@ body {
 }
 
 .settings-summary {
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -131,7 +581,7 @@ body {
 .team-checkboxes input[type="checkbox"] {
   width: 1.1em;
   height: 1.1em;
-  accent-color: var(--accent);
+  accent-color: var(--chi-blue);
   cursor: pointer;
 }
 
@@ -145,7 +595,71 @@ body {
   font-size: 0.85rem;
 }
 
-/* Mobile optimizations */
+.decade-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.decade-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.decade-checkboxes input[type="checkbox"] {
+  width: 1.1em;
+  height: 1.1em;
+  accent-color: var(--chi-blue);
+  cursor: pointer;
+}
+
+/* ========================================
+   DEV FOOTER
+   ======================================== */
+
+.dev-footer {
+  position: fixed;
+  bottom: max(0.5rem, env(safe-area-inset-bottom));
+  left: max(0.5rem, env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  z-index: 10;
+}
+
+.dev-footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.dev-footer a:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+.dev-footer button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+   ======================================== */
+
 @media (max-width: 600px) {
   body {
     padding: 0.5rem;
@@ -164,6 +678,10 @@ body {
 
   .game-content {
     width: 100%;
+    order: 0;
+  }
+
+  .guess-tracker {
     order: 0;
   }
 
@@ -227,12 +745,27 @@ body {
     min-height: 32px;
     padding: 0.25rem 0;
   }
+
+  .dev-footer {
+    position: static !important;
+    margin-top: 1rem;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+
+  .skyline-bg {
+    height: 160px;
+  }
 }
 
 /* Very small phones */
 @media (max-width: 380px) {
   .hero h1 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+  }
+
+  .logo-star {
+    width: 22px;
+    height: 22px;
   }
 
   #guess-form {
@@ -242,234 +775,4 @@ body {
   #guess-form button {
     width: 100%;
   }
-}
-
-.hero {
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
-.eyebrow {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  margin-bottom: 0.15rem;
-}
-
-.hero h1 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 0.15rem;
-}
-
-.subtitle {
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin-bottom: 0.25rem;
-}
-
-.day-label {
-  font-size: 0.8rem;
-  color: var(--muted);
-  text-align: center;
-}
-
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 0.5rem;
-  min-width: 0; /* Allow flex children to shrink */
-}
-
-.card-compact {
-  padding: 0.6rem 0.75rem;
-}
-
-.card-compact h2 {
-  font-size: 0.9rem;
-  margin-bottom: 0.4rem;
-}
-
-.card h2 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.team-badge {
-  display: inline-block;
-  background: rgba(196, 30, 58, 0.2);
-  color: var(--accent);
-  padding: 0.2rem 0.5rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-}
-
-.lineup {
-  list-style: none;
-}
-
-.lineup li {
-  padding: 0.25rem 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.9rem;
-  overflow-wrap: break-word;
-  word-break: break-word;
-}
-
-.lineup li:last-child {
-  border-bottom: none;
-}
-
-.lineup li.missing {
-  color: var(--muted);
-}
-
-.lineup li.missing.revealed {
-  color: var(--success);
-}
-
-#guess-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-bottom: 0.35rem;
-}
-
-#guess-input {
-  flex: 1;
-  min-width: 100px;
-  padding: 0.4rem 0.5rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text);
-  font-size: 0.9rem;
-}
-
-#guess-input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-button {
-  padding: 0.4rem 0.7rem;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-button:hover:not(:disabled) {
-  background: var(--accent-hover);
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-button.secondary {
-  background: var(--border);
-}
-
-button.secondary:hover {
-  background: #3a3a42;
-}
-
-.feedback {
-  font-size: 0.8rem;
-  margin-bottom: 0.25rem;
-  min-height: 1.2em;
-}
-
-.hints {
-  margin-top: 0.35rem;
-}
-
-.hint {
-  font-size: 0.75rem;
-  color: var(--muted);
-  padding: 0.2rem 0;
-  border-top: 1px solid var(--border);
-}
-
-.share-output {
-  background: var(--bg);
-  padding: 0.4rem 0.5rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  white-space: pre-wrap;
-  word-break: break-all;
-  margin-bottom: 0.4rem;
-  font-family: ui-monospace, monospace;
-}
-
-#copy-share {
-  width: 100%;
-  padding: 0.35rem 0.5rem;
-  font-size: 0.8rem;
-}
-
-.dev-footer {
-  position: fixed;
-  bottom: max(0.5rem, env(safe-area-inset-bottom));
-  left: max(0.5rem, env(safe-area-inset-left));
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  opacity: 0.6;
-  z-index: 10;
-}
-
-.dev-footer a {
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.dev-footer a:hover {
-  color: var(--text);
-  text-decoration: underline;
-}
-
-.dev-footer button {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-}
-
-@media (max-width: 600px) {
-  .dev-footer {
-    position: static !important;
-    margin-top: 1rem;
-    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
-  }
-}
-
-.decade-checkboxes {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.decade-checkboxes label {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-
-.decade-checkboxes input[type="checkbox"] {
-  width: 1.1em;
-  height: 1.1em;
-  accent-color: var(--accent);
-  cursor: pointer;
 }

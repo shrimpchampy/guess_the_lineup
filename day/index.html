@@ -4,22 +4,73 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <title>Missing Man Chicago 🏆</title>
-    <link rel="stylesheet" href="/styles.css?v=13" />
+    <title>Missing Man Chicago</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css?v=20" />
   </head>
   <body>
     <script>
       (function(){var m=/[?&]dev=1(?=&|$)|[?&]dev=true(?=&|$)/i.test(location.search);document.body.classList.add(m?'dev-mode':'user-mode');})();
     </script>
-    <div id="app-loading" style="text-align:center;padding:2rem;color:var(--muted, #888);">Loading…</div>
+
+    <!-- Chicago flag top stripe -->
+    <div class="flag-stripe"></div>
+
+    <!-- Skyline background -->
+    <div class="skyline-glow"></div>
+    <div class="skyline-bg">
+      <svg viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" fill="currentColor" color="var(--chi-blue)">
+        <path d="
+          M0,220 L0,180
+          L30,180 L30,160 L40,160 L40,170 L55,170 L55,140 L65,140 L65,155 L80,155 L80,130
+          L90,130 L90,140 L100,140 L100,120 L108,118 L110,80 L114,80 L116,118 L120,120 L120,140
+          L135,140 L135,100 L140,100 L140,95 L145,95 L145,100 L150,100 L150,140
+          L165,140 L165,110 L175,110 L175,100 L180,100 L180,90 L185,90 L185,100 L190,100 L190,110 L200,110 L200,140
+          L215,140 L215,130 L225,130 L225,120 L230,120 L230,115 L235,115 L235,120 L240,120 L240,130 L250,130 L250,140
+          L260,140 L260,105 L265,105 L265,60 L268,58 L270,30 L272,58 L275,60 L275,105 L280,105 L280,140
+          L295,140 L295,120 L305,120 L305,90 L310,90 L310,85 L315,85 L315,90 L320,90 L320,120 L330,120 L330,140
+          L345,140 L345,125 L355,125 L355,110 L365,110 L365,95 L370,95 L370,50 L373,48 L375,20 L377,48 L380,50
+          L380,95 L385,95 L385,110 L395,110 L395,125 L405,125 L405,140
+          L420,140 L420,130 L430,130 L430,100 L435,100 L435,95 L440,95 L440,100 L445,100 L445,130 L455,130 L455,140
+          L470,140 L470,120 L478,120 L478,75 L482,75 L482,70 L486,70 L486,75 L490,75 L490,120 L498,120 L498,140
+          L510,140 L510,125 L520,125 L520,135 L535,135 L535,140
+          L550,140 L550,120 L558,120 L558,108 L565,108 L565,65 L568,63 L570,40 L572,63 L575,65 L575,108 L582,108 L582,120 L590,120 L590,140
+          L610,140 L610,130 L625,130 L625,115 L630,115 L630,110 L635,110 L635,115 L640,115 L640,130 L655,130 L655,140
+          L670,140 L670,125 L680,125 L680,100 L685,98 L688,55 L691,98 L695,100 L695,125 L705,125 L705,140
+          L720,140 L720,135 L735,135 L735,120 L745,120 L745,105 L750,105 L750,100 L755,100 L755,105 L760,105 L760,120 L770,120 L770,135 L785,135 L785,140
+          L800,140 L800,130 L810,130 L810,90 L815,88 L818,50 L821,88 L825,90 L825,130 L835,130 L835,140
+          L850,140 L850,125 L860,125 L860,110 L870,110 L870,140
+          L890,140 L890,130 L900,130 L900,115 L905,115 L905,110 L910,110 L910,115 L915,115 L915,130 L925,130 L925,140
+          L940,140 L940,150 L955,150 L955,135 L965,135 L965,125 L970,125 L970,120 L975,120 L975,125 L980,125 L980,135 L990,135 L990,150 L1005,150 L1005,140
+          L1020,140 L1020,155 L1040,155 L1040,145 L1050,145 L1050,160 L1065,160 L1065,150 L1080,150 L1080,165
+          L1100,165 L1100,155 L1120,155 L1120,170 L1140,170 L1140,160 L1160,160 L1160,175
+          L1180,175 L1180,180 L1200,180 L1200,220 Z
+        " />
+      </svg>
+    </div>
+
+    <div id="app-loading" style="text-align:center;padding:2rem;color:var(--text-muted, #5A7A99);font-family:'Barlow',sans-serif;position:relative;z-index:1;">Loading…</div>
     <main class="app" id="app-main" style="display:none">
       <div class="game-content">
-      <header class="hero">
-        <h1>🏆 Missing Man Chicago</h1>
-        <p class="subtitle">One missing starter. One city. Six guesses.</p>
-        <p id="day-label" class="day-label"></p>
-      </header>
+        <header class="hero">
+          <div class="logo-lockup">
+            <svg class="logo-star" viewBox="0 0 40 40" fill="none">
+              <polygon points="20,2 23.5,14.5 36,14.5 26,22 29.5,35 20,27 10.5,35 14,22 4,14.5 16.5,14.5" fill="var(--chi-red)" opacity="0.9" />
+              <polygon points="20,7 22.5,15.5 31,15.5 24.5,21 27,30 20,24.5 13,30 15.5,21 9,15.5 17.5,15.5" fill="var(--chi-red)" opacity="0.5" />
+            </svg>
+            <h1>MISSING MAN <span class="accent">CHICAGO</span></h1>
+            <svg class="logo-star" viewBox="0 0 40 40" fill="none">
+              <polygon points="20,2 23.5,14.5 36,14.5 26,22 29.5,35 20,27 10.5,35 14,22 4,14.5 16.5,14.5" fill="var(--chi-red)" opacity="0.9" />
+              <polygon points="20,7 22.5,15.5 31,15.5 24.5,21 27,30 20,24.5 13,30 15.5,21 9,15.5 17.5,15.5" fill="var(--chi-red)" opacity="0.5" />
+            </svg>
+          </div>
+          <p class="subtitle">One missing starter · One city · Six guesses</p>
+          <p id="day-label" class="day-label"></p>
+        </header>
       </div>
+
+      <!-- Guess tracker pips -->
+      <div class="guess-tracker" id="guess-tracker"></div>
 
       <div class="lineup-row">
         <div class="lineup-bubble">
@@ -50,8 +101,8 @@
         <section class="card card-compact">
           <h2>Who is missing?</h2>
           <form id="guess-form" autocomplete="off">
-            <input id="guess-input" placeholder="Type a player name" required />
-            <button type="submit">Submit Guess</button>
+            <input id="guess-input" placeholder="Type a player name…" required />
+            <button type="submit">Guess</button>
           </form>
           <p id="feedback" class="feedback"></p>
           <div id="hints" class="hints"></div>
@@ -72,6 +123,6 @@
     </main>
 
     <script src="/data/puzzles.js?v=14" defer></script>
-    <script src="/app.js?v=15" defer></script>
+    <script src="/app.js?v=20" defer></script>
   </body>
 </html>
