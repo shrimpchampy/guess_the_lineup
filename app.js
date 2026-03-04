@@ -118,13 +118,13 @@ copyShareBtn.addEventListener("click", async () => {
 
 // --- Helper functions ---
 
-/** Day ID: Feb 27, 2026 = Day 1. Same for everyone globally (UTC). */
+/** Day ID: March 4, 2026 = Day 1. Same for everyone globally (UTC). */
 function getDayId() {
   const match = window.location.pathname.match(/^\/day\/(\d+)/);
   if (match) return parseInt(match[1], 10);
   const now = new Date();
   const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  const day1UTC = Date.UTC(2026, 1, 27); // Feb 27, 2026 = Day 1
+  const day1UTC = Date.UTC(2026, 2, 4); // March 4, 2026 = Day 1
   return Math.max(1, Math.floor((todayUTC - day1UTC) / (24 * 60 * 60 * 1000)) + 1);
 }
 
