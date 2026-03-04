@@ -428,6 +428,14 @@ button.secondary:hover {
   font-size: 0.75rem;
 }
 
+@media (max-width: 600px) {
+  .dev-footer {
+    position: static;
+    margin-top: 1rem;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+}
+
 .decade-checkboxes {
   display: flex;
   flex-direction: column;
