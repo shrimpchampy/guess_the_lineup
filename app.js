@@ -5,6 +5,10 @@ function init() {
     if (!window.MISSING_MAN?.puzzles) throw new Error("Puzzle data not loaded. Check your connection.");
     const { MAX_GUESSES, puzzles } = window.MISSING_MAN;
 
+/** Day 1 override: 2013 Bears Defense, #10 S (Chris Conte) */
+const DAY_1_PUZZLE_ID = 383;
+const DAY_1_MISSING_INDEX = 9;
+
 const dayLabel = document.querySelector("#day-label");
 const puzzleCard = document.querySelector("#puzzle-card");
 const form = document.querySelector("#guess-form");
@@ -33,7 +37,7 @@ const filteredPuzzles = getFilteredPuzzles(puzzles, decadeSettings, teamSettings
 
 // Resolve puzzle: canonical daily (same for everyone) or random from Reset
 let puzzle = resolvePuzzle(filteredPuzzles, state, dayId);
-const canonicalMissing = dayId % puzzle.lineup.length;
+const canonicalMissing = dayId === 1 ? DAY_1_MISSING_INDEX : dayId % puzzle.lineup.length;
 const usedResetState = state.puzzleId != null && puzzles.find((p) => String(p.id) === String(state.puzzleId));
 
 const needsSync = !usedResetState && (state.puzzleId !== puzzle.id || state.missingIndex !== canonicalMissing);
@@ -157,6 +161,10 @@ function resolvePuzzle(filtered, state, dayId) {
   if (state.puzzleId != null) {
     const byId = puzzles.find((p) => String(p.id) === String(state.puzzleId));
     if (byId) return byId;
+  }
+  if (dayId === 1) {
+    const d1 = puzzles.find((p) => p.id === DAY_1_PUZZLE_ID);
+    if (d1) return d1;
   }
   const canonical = getCanonicalPuzzles();
   return canonical.length > 0 ? canonical[dayId % canonical.length] : puzzles[0];
