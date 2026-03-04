@@ -272,6 +272,7 @@ body {
 .day-label {
   font-size: 0.8rem;
   color: var(--muted);
+  text-align: center;
 }
 
 .card {

@@ -252,7 +252,7 @@ function renderHeader() {
     day: "numeric",
     year: "numeric"
   });
-  dayLabel.textContent = `${dateStr} · ${puzzle.league} · ${puzzle.teamName}`;
+  dayLabel.textContent = dateStr;
 }
 
 function renderLineup() {
