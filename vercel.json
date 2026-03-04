@@ -1,5 +1,9 @@
 {
-  "rewrites": [{"source": "/day/:path*", "destination": "/day/index.html"}],
+  "rewrites": [
+    {"source": "/dev", "destination": "/?dev=1"},
+    {"source": "/dev/", "destination": "/?dev=1"},
+    {"source": "/day/:path*", "destination": "/day/index.html"}
+  ],
   "headers": [
     {
       "source": "/",

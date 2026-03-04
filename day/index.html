@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="/styles.css?v=13" />
   </head>
   <body>
+    <script>
+      (function(){var m=/[?&]dev=1(?=&|$)|[?&]dev=true(?=&|$)/i.test(location.search);document.body.classList.add(m?'dev-mode':'user-mode');})();
+    </script>
     <div id="app-loading" style="text-align:center;padding:2rem;color:var(--muted, #888);">Loading…</div>
     <main class="app" id="app-main" style="display:none">
       <div class="game-content">
@@ -23,7 +26,7 @@
         <div class="lineup-bubble">
           <section class="card" id="puzzle-card"></section>
         </div>
-        <aside class="settings-sidebar" id="settings-card">
+        <aside class="settings-sidebar" id="settings-card" data-dev-only>
           <details class="settings-details">
             <summary class="settings-summary">Settings</summary>
           <p class="settings-desc">Include puzzles from these teams:</p>
@@ -62,7 +65,7 @@
         </section>
       </div>
 
-      <div class="dev-footer" id="dev-footer">
+      <div class="dev-footer" id="dev-footer" data-dev-only>
         <a id="today-puzzle-link" href="#">Today's puzzle</a>
         <button id="reset-today" type="button" class="secondary">Reset Today (dev)</button>
         <a id="refresh-link" href="#" title="Bypass cache and reload">↻ Refresh</a>

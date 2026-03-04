@@ -5,6 +5,8 @@ function init() {
     if (!window.MISSING_MAN?.puzzles) throw new Error("Puzzle data not loaded. Check your connection.");
     const { MAX_GUESSES, puzzles } = window.MISSING_MAN;
 
+const isDevMode = /[?&]dev=1(?=&|$)|[?&]dev=true(?=&|$)/i.test(window.location.search);
+
 /** Day 1 override: 2013 Bears Defense, #10 S (Chris Conte) */
 const DAY_1_PUZZLE_ID = 383;
 const DAY_1_MISSING_INDEX = 9;
@@ -38,7 +40,7 @@ const filteredPuzzles = getFilteredPuzzles(puzzles, decadeSettings, teamSettings
 // Resolve puzzle: canonical daily (same for everyone) or random from Reset
 let puzzle = resolvePuzzle(filteredPuzzles, state, dayId);
 const canonicalMissing = dayId === 1 ? DAY_1_MISSING_INDEX : dayId % puzzle.lineup.length;
-const usedResetState = state.puzzleId != null && puzzles.find((p) => String(p.id) === String(state.puzzleId));
+const usedResetState = isDevMode && state.puzzleId != null && puzzles.find((p) => String(p.id) === String(state.puzzleId));
 
 const needsSync = !usedResetState && (state.puzzleId !== puzzle.id || state.missingIndex !== canonicalMissing);
 if (needsSync) {
@@ -62,10 +64,14 @@ restoreFeedback();
 
 // Dev footer: Today's puzzle link + Reset + Refresh (bypass cache)
 const todayLink = document.querySelector("#today-puzzle-link");
-if (todayLink) todayLink.href = `/day/${dayId}`;
+if (todayLink) todayLink.href = `/day/${dayId}` + (isDevMode ? "?dev=1" : "");
 document.querySelector("#refresh-link")?.addEventListener("click", (e) => {
   e.preventDefault();
-  window.location.href = window.location.pathname + (window.location.pathname === "/" ? "" : "/") + "?_=" + Date.now();
+  const base = window.location.pathname + (window.location.pathname === "/" ? "" : "");
+  const params = new URLSearchParams(window.location.search);
+  if (isDevMode) params.set("dev", "1");
+  params.set("_", String(Date.now()));
+  window.location.href = base + "?" + params.toString();
 });
 
 form.addEventListener("submit", (event) => {
@@ -111,8 +117,10 @@ resetTodayBtn?.addEventListener("click", () => {
   };
   const mainKey = `missing-man-chicago-${dayId}`;
   persistState(isDayUrl ? mainKey : storageKey, newState);
-  const target = isDayUrl ? "/" : (window.location.pathname || "/");
-  window.location.href = target + (target.includes("?") ? "&" : "?") + "_r=" + Date.now();
+  let target = isDayUrl ? "/" : (window.location.pathname || "/");
+  const sep = target.includes("?") ? "&" : "?";
+  target += sep + "_r=" + Date.now() + (isDevMode ? "&dev=1" : "");
+  window.location.href = target;
 });
 
 copyShareBtn.addEventListener("click", async () => {
