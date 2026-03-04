@@ -183,9 +183,6 @@ body {
 
   .dev-footer {
     order: 4;
-    position: static;
-    margin-top: 1rem;
-    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   }
 
   .settings-details {
@@ -440,6 +437,14 @@ button.secondary:hover {
 .dev-footer button {
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
+}
+
+@media (max-width: 600px) {
+  .dev-footer {
+    position: static !important;
+    margin-top: 1rem;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
 }
 
 .decade-checkboxes {
