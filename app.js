@@ -5,7 +5,7 @@ function init() {
     if (!window.MISSING_MAN?.puzzles) throw new Error("Puzzle data not loaded. Check your connection.");
     const { MAX_GUESSES, puzzles } = window.MISSING_MAN;
 
-const isDevMode = /[?&]dev=1(?=&|$)|[?&]dev=true(?=&|$)/i.test(window.location.search);
+const isDevMode = /[?&]dev=1(?=&|$)|[?&]dev=true(?=&|$)/i.test(window.location.search) || /^\/dev\/?$/i.test(window.location.pathname);
 
 /** Day 1 override: 2013 Bears Defense, #10 S (Chris Conte) */
 const DAY_1_PUZZLE_ID = 383;

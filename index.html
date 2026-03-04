@@ -10,7 +10,7 @@
   </head>
   <body>
     <script>
-      (function(){var m=/[?&]dev=1(?=&|$)|[?&]dev=true(?=&|$)/i.test(location.search);document.body.classList.add(m?'dev-mode':'user-mode');})();
+      (function(){var m=/[?&]dev=1(?=&|$)|[?&]dev=true(?=&|$)/i.test(location.search)||/^\/dev\/?$/i.test(location.pathname);document.body.classList.add(m?'dev-mode':'user-mode');})();
     </script>
 
     <!-- Chicago flag top stripe -->
