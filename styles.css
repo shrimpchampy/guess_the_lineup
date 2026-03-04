@@ -153,25 +153,39 @@ body {
   .app {
     max-width: 100%;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   .game-content {
     width: 100%;
+    order: 0;
   }
 
   .lineup-row {
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    display: contents;
   }
 
   .lineup-bubble {
     width: 100%;
+    order: 1;
+  }
+
+  .game-bottom {
+    order: 2;
   }
 
   .settings-sidebar {
     width: 100%;
     min-width: unset;
+    order: 3;
+  }
+
+  .dev-footer {
+    order: 4;
+    position: static;
+    margin-top: 1rem;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   }
 
   .settings-details {
@@ -426,14 +440,6 @@ button.secondary:hover {
 .dev-footer button {
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
-}
-
-@media (max-width: 600px) {
-  .dev-footer {
-    position: static;
-    margin-top: 1rem;
-    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
-  }
 }
 
 .decade-checkboxes {
