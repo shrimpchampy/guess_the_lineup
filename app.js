@@ -118,14 +118,14 @@ copyShareBtn.addEventListener("click", async () => {
 
 // --- Helper functions ---
 
-/** Day ID = days since Jan 1, 2025 (UTC). Same for everyone globally. */
+/** Day ID: Feb 27, 2026 = Day 1. Same for everyone globally (UTC). */
 function getDayId() {
   const match = window.location.pathname.match(/^\/day\/(\d+)/);
   if (match) return parseInt(match[1], 10);
   const now = new Date();
   const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  const jan1UTC = Date.UTC(2025, 0, 1);
-  return Math.floor((todayUTC - jan1UTC) / (24 * 60 * 60 * 1000));
+  const day1UTC = Date.UTC(2026, 1, 27); // Feb 27, 2026 = Day 1
+  return Math.max(1, Math.floor((todayUTC - day1UTC) / (24 * 60 * 60 * 1000)) + 1);
 }
 
 /** Extract year from teamName (e.g. "2016 Chicago Cubs" -> 2016). */
