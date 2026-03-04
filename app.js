@@ -20,7 +20,8 @@ const teamCheckboxes = document.querySelector("#team-checkboxes");
 const SETTINGS_KEY = "missing-man-chicago-decades";
 const TEAMS_SETTINGS_KEY = "missing-man-chicago-teams";
 const dayId = getDayId();
-const storageKey = `missing-man-chicago-${dayId}`;
+const isDayUrl = /^\/day\/\d+$/.test(window.location.pathname);
+const storageKey = isDayUrl ? `missing-man-chicago-day-${dayId}` : `missing-man-chicago-${dayId}`;
 const state = loadState(storageKey);
 
 // Load settings (default: all checked)
@@ -30,13 +31,17 @@ const teamSettings = loadTeamSettings();
 // Filter puzzles by selected decades and teams
 const filteredPuzzles = getFilteredPuzzles(puzzles, decadeSettings, teamSettings);
 
-// Resolve puzzle: use stored puzzleId (in-progress game) or day-based selection from filtered set
+// Resolve puzzle: canonical daily (same for everyone) or random from Reset
 let puzzle = resolvePuzzle(filteredPuzzles, state, dayId);
+const canonicalMissing = dayId % puzzle.lineup.length;
+const usedResetState = state.puzzleId != null && puzzles.find((p) => String(p.id) === String(state.puzzleId));
 
-// Randomize missing player on first load (or use stored choice)
-if (state.missingIndex == null) {
-  state.missingIndex = Math.floor(Math.random() * puzzle.lineup.length);
+const needsSync = !usedResetState && (state.puzzleId !== puzzle.id || state.missingIndex !== canonicalMissing);
+if (needsSync) {
   state.puzzleId = puzzle.id;
+  state.missingIndex = canonicalMissing;
+  state.guesses = [];
+  state.complete = false;
   persistState(storageKey, state);
 }
 const answer = puzzle.lineup[state.missingIndex];
@@ -50,6 +55,10 @@ renderLineup();
 renderHints();
 renderShare();
 restoreFeedback();
+
+// Dev footer: Today's puzzle link + Reset
+const todayLink = document.querySelector("#today-puzzle-link");
+if (todayLink) todayLink.href = `/day/${dayId}`;
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -84,20 +93,18 @@ form.addEventListener("submit", (event) => {
 });
 
 resetTodayBtn?.addEventListener("click", () => {
-  // Dev: pick new random puzzle from filtered set + new random missing player
-  if (filteredPuzzles.length === 0) {
-    feedback.textContent = "Select at least one team and one decade in Settings.";
-    return;
-  }
-  const newPuzzle = filteredPuzzles[Math.floor(Math.random() * filteredPuzzles.length)];
+  // Random puzzle from entire pool (for testing)
+  const newPuzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
   const newState = {
     puzzleId: newPuzzle.id,
     missingIndex: Math.floor(Math.random() * newPuzzle.lineup.length),
     guesses: [],
     complete: false
   };
-  persistState(storageKey, newState);
-  window.location.reload();
+  const mainKey = `missing-man-chicago-${dayId}`;
+  persistState(isDayUrl ? mainKey : storageKey, newState);
+  const target = isDayUrl ? "/" : (window.location.pathname || "/");
+  window.location.href = target + (target.includes("?") ? "&" : "?") + "_r=" + Date.now();
 });
 
 copyShareBtn.addEventListener("click", async () => {
@@ -111,13 +118,14 @@ copyShareBtn.addEventListener("click", async () => {
 
 // --- Helper functions ---
 
-/** Day ID = days since Jan 1, 2025. From URL /day/N or from today's date. */
+/** Day ID = days since Jan 1, 2025 (UTC). Same for everyone globally. */
 function getDayId() {
   const match = window.location.pathname.match(/^\/day\/(\d+)/);
   if (match) return parseInt(match[1], 10);
-  const jan1 = new Date("2025-01-01T00:00:00");
   const now = new Date();
-  return Math.floor((now - jan1) / (24 * 60 * 60 * 1000));
+  const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const jan1UTC = Date.UTC(2025, 0, 1);
+  return Math.floor((todayUTC - jan1UTC) / (24 * 60 * 60 * 1000));
 }
 
 /** Extract year from teamName (e.g. "2016 Chicago Cubs" -> 2016). */
@@ -139,21 +147,19 @@ function getFilteredPuzzles(allPuzzles, selectedDecades, selectedTeams) {
   });
 }
 
-/** Resolve which puzzle to use: in-progress by id, or day-based from filtered set. */
+/** Canonical daily puzzles: fixed set so everyone gets same puzzle regardless of settings. */
+function getCanonicalPuzzles() {
+  return puzzles.filter((p) => (p.teamCode || "") === "CHI");
+}
+
+/** Resolve which puzzle to use. Canonical daily, or random from Reset. */
 function resolvePuzzle(filtered, state, dayId) {
-  // If user has an in-progress game, use that puzzle (from full list)
   if (state.puzzleId != null) {
-    const byId = puzzles.find((p) => p.id === state.puzzleId);
+    const byId = puzzles.find((p) => String(p.id) === String(state.puzzleId));
     if (byId) return byId;
   }
-  // Migrate legacy puzzleIndex
-  if (state.puzzleIndex != null && puzzles[state.puzzleIndex]) {
-    return puzzles[state.puzzleIndex];
-  }
-  // Day-based selection from filtered set
-  if (filtered.length === 0) return puzzles[0]; // fallback if no puzzles match
-  const idx = dayId % filtered.length;
-  return filtered[idx];
+  const canonical = getCanonicalPuzzles();
+  return canonical.length > 0 ? canonical[dayId % canonical.length] : puzzles[0];
 }
 
 function loadDecadeSettings() {
@@ -179,7 +185,7 @@ function loadTeamSettings() {
       if (Array.isArray(arr)) return arr;
     }
   } catch (_) {}
-  return ["CHC", "CHI"];
+  return ["CHI"];
 }
 
 function saveTeamSettings(teams) {
@@ -332,7 +338,7 @@ function renderShare() {
     const g = state.guesses[i];
     row += !g ? "⬜" : g.isCorrect ? "🟩" : "🟥";
   }
-  const gameUrl = window.location.origin + "/";
+  const gameUrl = window.location.origin + "/day/" + dayId;
   const header = `Missing Man Chicago · Day ${dayId}\n`;
   shareOutput.textContent = header + row + `\n\nPlay: ${gameUrl}`;
 }

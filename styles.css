@@ -401,6 +401,33 @@ button.secondary:hover {
   font-size: 0.8rem;
 }
 
+.dev-footer {
+  position: fixed;
+  bottom: max(0.5rem, env(safe-area-inset-bottom));
+  left: max(0.5rem, env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  z-index: 10;
+}
+
+.dev-footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.dev-footer a:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+.dev-footer button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
 .decade-checkboxes {
   display: flex;
   flex-direction: column;
