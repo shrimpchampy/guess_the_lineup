@@ -2,9 +2,30 @@
   "rewrites": [{"source": "/day/:path*", "destination": "/day/index.html"}],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/",
       "headers": [
-        {"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}
+        {"key": "Cache-Control", "value": "no-store, no-cache, must-revalidate"},
+        {"key": "Pragma", "value": "no-cache"}
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store, no-cache, must-revalidate"},
+        {"key": "Pragma", "value": "no-cache"}
+      ]
+    },
+    {
+      "source": "/day/index.html",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store, no-cache, must-revalidate"},
+        {"key": "Pragma", "value": "no-cache"}
+      ]
+    },
+    {
+      "source": "/app.js",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store, no-cache, must-revalidate"}
       ]
     }
   ]

@@ -60,9 +60,13 @@ renderHints();
 renderShare();
 restoreFeedback();
 
-// Dev footer: Today's puzzle link + Reset
+// Dev footer: Today's puzzle link + Reset + Refresh (bypass cache)
 const todayLink = document.querySelector("#today-puzzle-link");
 if (todayLink) todayLink.href = `/day/${dayId}`;
+document.querySelector("#refresh-link")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  window.location.href = window.location.pathname + (window.location.pathname === "/" ? "" : "/") + "?_=" + Date.now();
+});
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
