@@ -27,7 +27,11 @@ const SETTINGS_KEY = "missing-man-chicago-decades";
 const TEAMS_SETTINGS_KEY = "missing-man-chicago-teams";
 const dayId = getDayId();
 const isDayUrl = /^\/day\/\d+$/.test(window.location.pathname);
-const storageKey = isDayUrl ? `missing-man-chicago-day-${dayId}` : `missing-man-chicago-${dayId}`;
+const storageKey = isDayUrl
+  ? `missing-man-chicago-day-${dayId}`
+  : isDevMode
+    ? `missing-man-chicago-dev-${dayId}`
+    : `missing-man-chicago-${dayId}`;
 const state = loadState(storageKey);
 
 // Load settings (default: all checked)
@@ -170,9 +174,9 @@ function getCanonicalPuzzles() {
   return puzzles.filter((p) => (p.teamCode || "") === "CHI");
 }
 
-/** Resolve which puzzle to use. Canonical daily, or random from Reset. */
+/** Resolve which puzzle to use. User mode: always canonical. Dev mode: canonical or Reset state. */
 function resolvePuzzle(filtered, state, dayId) {
-  if (state.puzzleId != null) {
+  if (isDevMode && state.puzzleId != null) {
     const byId = puzzles.find((p) => String(p.id) === String(state.puzzleId));
     if (byId) return byId;
   }
